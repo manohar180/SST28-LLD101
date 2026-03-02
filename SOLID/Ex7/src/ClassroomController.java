@@ -4,24 +4,28 @@ public class ClassroomController {
     public ClassroomController(DeviceRegistry reg) { this.reg = reg; }
 
     public void startClass() {
-        SmartClassroomDevice pj = reg.getFirstOfType("Projector");
-        pj.powerOn();
+        // Projector
+        Connectable pj = reg.getFirstOfCapability(Connectable.class);
+        ((Powerable)pj).powerOn();
         pj.connectInput("HDMI-1");
 
-        SmartClassroomDevice lights = reg.getFirstOfType("LightsPanel");
-        lights.setBrightness(60);
+        // Lights
+        reg.getFirstOfCapability(Dimmable.class).setBrightness(60);
 
-        SmartClassroomDevice ac = reg.getFirstOfType("AirConditioner");
-        ac.setTemperatureC(24);
+        // AC
+        reg.getFirstOfCapability(Climatizable.class).setTemperatureC(24);
 
-        SmartClassroomDevice scan = reg.getFirstOfType("AttendanceScanner");
+        // Scanner
+        Attendable scan = reg.getFirstOfCapability(Attendable.class);
         System.out.println("Attendance scanned: present=" + scan.scanAttendance());
     }
 
     public void endClass() {
         System.out.println("Shutdown sequence:");
-        reg.getFirstOfType("Projector").powerOff();
-        reg.getFirstOfType("LightsPanel").powerOff();
-        reg.getFirstOfType("AirConditioner").powerOff();
+        // Note: We loop through things that can be powered off
+        // Or specifically target them as requested in the original logic:
+        ((Powerable)reg.getFirstOfCapability(Connectable.class)).powerOff(); // Projector
+        ((Powerable)reg.getFirstOfCapability(Dimmable.class)).powerOff();    // Lights
+        ((Powerable)reg.getFirstOfCapability(Climatizable.class)).powerOff(); // AC
     }
 }

@@ -1,11 +1,20 @@
 public class EvaluationPipeline {
-    // DIP violation: high-level module constructs concretes directly
-    public void evaluate(Submission sub) {
-        Rubric rubric = new Rubric();
-        PlagiarismChecker pc = new PlagiarismChecker();
-        CodeGrader grader = new CodeGrader();
-        ReportWriter writer = new ReportWriter();
+    private final IPlagiarismChecker pc;
+    private final ICodeGrader grader;
+    private final IReportWriter writer;
+    private final Rubric rubric;
 
+    // Dependency Injection via Constructor
+    public EvaluationPipeline(IPlagiarismChecker pc, ICodeGrader grader, 
+                              IReportWriter writer, Rubric rubric) {
+        this.pc = pc;
+        this.grader = grader;
+        this.writer = writer;
+        this.rubric = rubric;
+    }
+
+    public void evaluate(Submission sub) {
+        // Now using abstractions instead of creating concretes with 'new'
         int plag = pc.check(sub);
         System.out.println("PlagiarismScore=" + plag);
 

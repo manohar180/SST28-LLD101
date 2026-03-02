@@ -1,20 +1,29 @@
 public class TransportBookingService {
-    // DIP violation: direct concretes
-    public void book(TripRequest req) {
-        DistanceCalculator dist = new DistanceCalculator();
-        DriverAllocator alloc = new DriverAllocator();
-        PaymentGateway pay = new PaymentGateway();
+    private final IDistanceCalculator distCalc;
+    private final IDriverAllocator allocator;
+    private final IPaymentGateway gateway;
 
-        double km = dist.km(req.from, req.to);
+    // Dependency Injection via Constructor
+    public TransportBookingService(IDistanceCalculator distCalc, 
+                                   IDriverAllocator allocator, 
+                                   IPaymentGateway gateway) {
+        this.distCalc = distCalc;
+        this.allocator = allocator;
+        this.gateway = gateway;
+    }
+
+    public void book(TripRequest req) {
+        // Now using injected abstractions instead of local 'new' calls
+        double km = distCalc.km(req.from, req.to);
         System.out.println("DistanceKm=" + km);
 
-        String driver = alloc.allocate(req.studentId);
+        String driver = allocator.allocate(req.studentId);
         System.out.println("Driver=" + driver);
 
-        double fare = 50.0 + km * 6.6666666667; // messy pricing
+        double fare = 50.0 + km * 6.6666666667;
         fare = Math.round(fare * 100.0) / 100.0;
 
-        String txn = pay.charge(req.studentId, fare);
+        String txn = gateway.charge(req.studentId, fare);
         System.out.println("Payment=PAID txn=" + txn);
 
         BookingReceipt r = new BookingReceipt("R-501", fare);
