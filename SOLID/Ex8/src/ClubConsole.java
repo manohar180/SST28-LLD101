@@ -8,7 +8,6 @@ public class ClubConsole {
     }
 
     public void run() {
-        // Now using specific interfaces instead of the fat ClubAdminTools
         Financier treasurer = new TreasurerTool(ledger);
         Secretary secretary = new SecretaryTool(minutes);
         EventLead lead = new EventLeadTool(events);

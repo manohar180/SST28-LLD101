@@ -3,17 +3,14 @@ public class TransportBookingService {
     private final IDriverAllocator allocator;
     private final IPaymentGateway gateway;
 
-    // Dependency Injection via Constructor
-    public TransportBookingService(IDistanceCalculator distCalc, 
-                                   IDriverAllocator allocator, 
-                                   IPaymentGateway gateway) {
+
+    public TransportBookingService(IDistanceCalculator distCalc, IDriverAllocator allocator, IPaymentGateway gateway) {
         this.distCalc = distCalc;
         this.allocator = allocator;
         this.gateway = gateway;
     }
 
     public void book(TripRequest req) {
-        // Now using injected abstractions instead of local 'new' calls
         double km = distCalc.km(req.from, req.to);
         System.out.println("DistanceKm=" + km);
 

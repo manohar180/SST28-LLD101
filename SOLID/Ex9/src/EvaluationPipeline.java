@@ -4,9 +4,7 @@ public class EvaluationPipeline {
     private final IReportWriter writer;
     private final Rubric rubric;
 
-    // Dependency Injection via Constructor
-    public EvaluationPipeline(IPlagiarismChecker pc, ICodeGrader grader, 
-                              IReportWriter writer, Rubric rubric) {
+    public EvaluationPipeline(IPlagiarismChecker pc, ICodeGrader grader, IReportWriter writer, Rubric rubric) {
         this.pc = pc;
         this.grader = grader;
         this.writer = writer;
@@ -14,7 +12,6 @@ public class EvaluationPipeline {
     }
 
     public void evaluate(Submission sub) {
-        // Now using abstractions instead of creating concretes with 'new'
         int plag = pc.check(sub);
         System.out.println("PlagiarismScore=" + plag);
 
