@@ -1,7 +1,5 @@
 package com.example.reports;
-
 public class App {
-
     public static void main(String[] args) {
         User student = new User("Jasleen", "STUDENT");
         User faculty = new User("Prof. Noor", "FACULTY");
