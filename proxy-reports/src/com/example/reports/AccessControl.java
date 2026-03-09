@@ -1,5 +1,4 @@
 package com.example.reports;
-
 public class AccessControl {
 
     public boolean canAccess(User user, String classification) {

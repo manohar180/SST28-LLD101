@@ -6,7 +6,6 @@ public class FastPayAdapter implements PaymentGateway {
     public FastPayAdapter(FastPayClient client) {
         this.client = client;
     }
-
     @Override
     public String charge(String customerId, int amountCents) {
         return client.payNow(customerId, amountCents);
